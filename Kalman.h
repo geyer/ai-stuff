@@ -8,15 +8,9 @@ namespace Filter
   {
   public:
     static void sense(GaussianDistribution &belief,
-		      const GaussianDistribution &measurement)
-    {
-      belief = normalizedProduct(belief, measurement);
-    }
+		      const GaussianDistribution &measurement);
     static void act(GaussianDistribution &belief,
-		    const GaussianDistribution movement)
-    {
-      belief = conv(belief, movement);
-    }
+		    const GaussianDistribution movement);
   };
 
 }
