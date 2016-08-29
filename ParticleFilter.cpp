@@ -78,7 +78,13 @@ namespace Filter
     std::transform(std::cbegin(particles), std::cend(particles),
 		   std::begin(weights), weightFunction);
 
+    // normalise weights
+    auto weightTotal = std::accumulate(weights.cbegin(), weights.cend(), 0);
+    std::transform(weights.begin(), weights.end(), weights.begin(),
+		   [weightTotal] (double w) { return w / weightTotal; });
+
     // resample
+
 
   }
 }
