@@ -21,7 +21,8 @@ namespace Filter
     std::default_random_engine generator;
   };
 
-  double measurementProbability(const Particle& p, const Landmarks &measurement);
+  double measurementProbability(const Particle& p, const Landmarks &measurement,
+				const Landmarks &landmarks);
 
   ParticleFilter::ParticleFilter(std::size_t n)
     : particles(n)
@@ -42,8 +43,8 @@ namespace Filter
   {
     // calculate weights
     auto weights = std::vector<double> {};
-    auto weightFunction = [&measurement] (const Particle &p)
-      { return measurementProbability(p, measurement); };
+    auto weightFunction = [&measurement, &landmarks] (const Particle &p)
+      { return measurementProbability(p, measurement, landmarks); };
 
     std::transform(std::cbegin(particles), std::cend(particles),
 		   std::begin(weights), weightFunction);
