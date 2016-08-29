@@ -80,7 +80,23 @@ namespace Filter
 		   std::begin(weights), weightFunction);
 
     // resample
+    resample(weights);
+  }
 
+  void ParticleFilter::resample(const std::vector<double> &weights)
+  {
+    auto random_numbers = std::vector<double>(size);
+    auto gen = std::default_random_engine ();
+    auto dist = std::discrete_distribution<decltype(particles)::size_type>
+      (weights.begin(), weights.end());
 
+    auto new_particles = decltype(particles) (size);
+    auto & old_particles = particles;
+    auto draw = [&old_particles, &dist, &gen] ()
+      { return old_particles[dist(gen)]; };
+
+    // draw randomly from particles
+    std::generate(new_particles.begin(), new_particles.end(), draw);
+    std::swap(particles, new_particles);
   }
 }
