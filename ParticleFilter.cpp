@@ -31,7 +31,7 @@ namespace Filter
   }
 
   void ParticleFilter::sense(const Landmarks &measurement,
-			     const Landmarks landmarks)
+			     const Landmarks &landmarks)
   {
     // calculate weights
     auto weights = std::vector<double> {};

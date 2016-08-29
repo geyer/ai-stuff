@@ -22,7 +22,7 @@ namespace Filter
   public:
     ParticleFilter(std::size_t numberOfParticles);
 
-    void sense(const Landmarks &measurement, const Landmarks landmarks);
+    void sense(const Landmarks &measurement, const Landmarks &landmarks);
     void act(const std::function<Particle (const Particle&)> &movementFunction);
 
   private:
