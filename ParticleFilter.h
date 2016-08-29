@@ -28,6 +28,7 @@ namespace Filter
   private:
     void resample(const std::vector<double> &weights);
 
+    std::size_t size;
     std::vector<Particle> particles;
   };
 }

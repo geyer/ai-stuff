@@ -55,6 +55,7 @@ namespace Filter
 
   ParticleFilter::ParticleFilter(std::size_t n)
     : particles(n)
+    , size(n)
   {
     auto particleGenerator = ParticleGenerator();
 
