@@ -1,5 +1,6 @@
 #include "ParticleFilter.h"
 #include <random>
+#include <numeric>
 
 namespace Filter
 {
@@ -44,14 +45,11 @@ namespace Filter
       };
 
     // set probability the distribution value at the measurement.
-    auto prob = 1.0;
-    auto ps = std::vector<double> ();
-    std::transform(std::begin(measurement), std::end(measurement),
-		   std::begin(landmarks),
-		   std::begin(ps), prediction);
-
-    std::for_each(std::begin(ps), std::end(ps),
-		  [&prob] (double p) { prob *= p; });
+    auto prob =
+      std::inner_product(std::begin(measurement), std::end(measurement),
+			 std::begin(landmarks),
+			 1.0,
+			 std::plus<double>(), prediction);
     return prob;
   }
 
