@@ -3,23 +3,30 @@
 
 namespace Filter
 {
+  class ParticleGenerator
+  {
+  public:
+    Particle operator() ()
+    {
+      auto position_distribution =
+	std::uniform_real_distribution<double> { -1.0, 1.0 };
+      auto orientation_distribution =
+	std::uniform_real_distribution<double> { 0.0, 2 * PI };
+
+      return Particle { position_distribution(generator),
+	  orientation_distribution(generator) };
+    }
+
+  private:
+    std::default_random_engine generator;
+  };
+
   double measurementProbability(const Particle& p, const Landmarks &measurement);
 
   ParticleFilter::ParticleFilter(std::size_t n)
     : particles(n)
   {
-    auto generator = std::default_random_engine ();
-    auto position_distribution =
-      std::uniform_real_distribution<double> { -1.0, 1.0 };
-    auto orientation_distribution =
-      std::uniform_real_distribution<double> { 0.0, 2 * PI };
-
-    auto particleGenerator =
-      [&position_distribution, &orientation_distribution, &generator]()
-      {
-	return Particle { position_distribution(generator),
-			  orientation_distribution(generator) };
-      };
+    auto particleGenerator = ParticleGenerator();
 
     std::generate (particles.begin(), particles.end(), particleGenerator);
   }
