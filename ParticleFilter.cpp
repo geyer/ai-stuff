@@ -21,8 +21,39 @@ namespace Filter
     std::default_random_engine generator;
   };
 
+  Orientation inverse(const Orientation &o)
+  {
+    return 1 / o;
+  }
+
   double measurementProbability(const Particle& p, const Landmarks &measurement,
-				const Landmarks &landmarks);
+				const Landmarks &landmarks)
+  {
+    // prediction for a single landmark
+    auto prediction = [&p] (Coordinates landmarkPosition,
+			    Coordinates landmarkMeasurement)
+      {
+	auto relativePosition = landmarkPosition - p.position;
+	auto expectedCoordinates = inverse(p.orientation) * relativePosition;
+	auto noise = p.measurementNoise;
+	auto distribution = [&expectedCoordinates, &noise]
+	(Coordinates c)
+	{ return std::exp (-std::pow(c - expectedCoordinates, 2) / noise); };
+
+	return distribution(landmarkMeasurement);
+      };
+
+    // set probability the distribution value at the measurement.
+    auto prob = 1.0;
+    auto ps = std::vector<double> ();
+    std::transform(std::begin(measurement), std::end(measurement),
+		   std::begin(landmarks),
+		   std::begin(ps), prediction);
+
+    std::for_each(std::begin(ps), std::end(ps),
+		  [&prob] (double p) { prob *= p; });
+    return prob;
+  }
 
   ParticleFilter::ParticleFilter(std::size_t n)
     : particles(n)
