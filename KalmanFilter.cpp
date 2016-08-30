@@ -2,16 +2,15 @@
 
 namespace Filter
 {
-  void KalmanFilter::sense(GaussianDistribution &belief,
-				  const GaussianDistribution &measurement)
+  void KalmanFilter::sense(const GaussianDistribution &measurement)
   {
-    belief = normalizedProduct(belief, measurement);
+    belief.position = normalizedProduct(belief.position, measurement);
+    static_assert(false, "Update velocity with position from measurement");
   }
 
-  void KalmanFilter::act(GaussianDistribution &belief,
-				const GaussianDistribution movement)
+  void KalmanFilter::act()
   {
-    belief = conv(belief, movement);
+    belief.position = conv(belief.position, belief.velocity);
   }
 
 }

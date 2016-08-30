@@ -9,10 +9,16 @@ namespace Filter
   class KalmanFilter
   {
   public:
-    static void sense(GaussianDistribution &belief,
-		      const GaussianDistribution &measurement);
-    static void act(GaussianDistribution &belief,
-		    const GaussianDistribution movement);
+    void sense(const GaussianDistribution &measurement);
+    void act(); // should take time as an argument
+  private:
+    struct State
+    {
+      GaussianDistribution position;
+      GaussianDistribution velocity;
+      static_assert(false, "Use 2n-dimensional distribution for position and velocity");
+    };
+    State belief;
   };
 
 }
