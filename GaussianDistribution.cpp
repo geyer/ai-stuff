@@ -1,4 +1,3 @@
-
 #include "GaussianDistribution.h"
 #include <cmath>
 

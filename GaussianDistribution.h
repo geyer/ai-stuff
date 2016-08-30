@@ -1,3 +1,5 @@
+#ifndef _GAUSSIAN_DISTRIBUTION_H_
+#define _GAUSSIAN_DISTRIBUTION_H_
 
 namespace Filter
 {
@@ -13,3 +15,5 @@ namespace Filter
     GaussianDistribution conv(const GaussianDistribution &lhs,
 			      const GaussianDistribution &rhs);
 }
+
+#endif
